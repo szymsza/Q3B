@@ -12,7 +12,9 @@ struct Config
     int precision = 0;
 
     InitialOrder initialOrder = HEURISTIC;
-    ReorderType reorderType = NO_REORDER;
+    ReorderType reorderType = SIFT;
+    int siftMaxGrowth = 5;
+    int siftMaxVar = 1;
 
     bool propagateUnconstrained = true;
     bool goalUnconstrained = true;
