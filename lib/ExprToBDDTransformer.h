@@ -176,10 +176,20 @@ class ExprToBDDTransformer
         return operationApproximationHappened;
     }
 
+    void setReorderingGroups() {
+        for (const auto& [var, bddVars] : varIndices) {
+            for (size_t i = 1; i < bddVars.size(); i++) {
+                bddManager.SetVarOrderConstraint(bddVars[i-1], bddVars[i]);
+            }
+        }
+    }
+
     void configureReorder()
     {
         if (config.reorderType != NO_REORDER)
         {
+          setReorderingGroups();
+
           switch (config.reorderType)
           {
               case WIN2:
@@ -209,6 +219,8 @@ class ExprToBDDTransformer
           }
         }
     }
+
+    void configureTermination();
 
     void PrintModel(const std::map<std::string, std::vector<bool>>&);
     std::map<std::string, std::vector<bool>> GetModel(BDD, BDDType);
