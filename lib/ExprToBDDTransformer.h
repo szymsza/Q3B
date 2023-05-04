@@ -174,10 +174,20 @@ class ExprToBDDTransformer
         return operationApproximationHappened;
     }
 
+    void setReorderingGroups() {
+        for (const auto& [var, bddVars] : varIndices) {
+            for (size_t i = 1; i < bddVars.size(); i++) {
+                bddManager.SetVarOrderConstraint(bddVars[i-1], bddVars[i]);
+            }
+        }
+    }
+
     void configureReorder()
     {
         if (config.reorderType != NO_REORDER)
         {
+          setReorderingGroups();
+
           switch (config.reorderType)
           {
               case WIN2:
