@@ -37,6 +37,8 @@ void print_usage()
     std::cout << "  --simpl:unconstrained       use unconstrained variable simplification [1]" << std::endl;
     std::cout << "  --uc:goal                   take goals of unconstrained variables into account [1]" << std::endl;
     std::cout << "  --bdd:reorder               BDD reorder type (none|win2|win2ite|win3|win3ite|sift|siftite) [sift]" << std::endl;
+    std::cout << "  --bdd:sift-max-var          max number of variables to get sifted [3]" << std::endl;
+    std::cout << "  --bdd:sift-max-growth       max percentage BDD growth during sifting [100]" << std::endl;
     std::cout << "  --bdd:initial-order         initial order of BDD variables (interleave|sequential|heuristic) [heuristic]" << std::endl;
     std::cout << "  --simpl:flip-universal      negate universal formulas [0]" << std::endl;
     std::cout << "  --verbosity                 set level of debugging outputs [0]" << std::endl;
@@ -54,6 +56,8 @@ int main(int argc, char* argv[])
         {"simpl:add-congruences", required_argument, 0, 'C' },
         {"uc:goal", required_argument, 0, 'g' },
 	{"bdd:reorder", required_argument, 0, 'r' },
+    {"bdd:sift-max-var", required_argument, 0, 's' },
+    {"bdd:sift-max-growth", required_argument, 0, 'w' },
 	{"bdd:initial-order", required_argument, 0, 'i' },
 	{"simpl:flip-universal", required_argument, 0, 'f' },
 	{"verbosity", required_argument, 0, 'v' },
@@ -67,7 +71,7 @@ int main(int argc, char* argv[])
 
     int opt = 0;
     int long_index = 0;
-    while ((opt = getopt_long(argc, argv,"a:m:b:p:g:r:i:c:C:f:v:hV", long_options, &long_index )) != -1) {
+    while ((opt = getopt_long(argc, argv,"a:m:b:p:g:r:s:w:i:c:C:f:v:hV", long_options, &long_index )) != -1) {
 	switch (opt) {
 	case 'a':
         {
@@ -117,6 +121,12 @@ int main(int argc, char* argv[])
 
 	    break;
 	}
+    case 's':
+        config.siftMaxVar = atoi(optarg);
+        break;
+    case 'w':
+        config.siftMaxGrowth = atoi(optarg);
+        break;
 	case 'i':
 	{
 	    string optionString(optarg);
